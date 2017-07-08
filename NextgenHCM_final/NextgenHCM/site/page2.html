@@ -1,0 +1,378 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+ <meta name="viewport" content="width=550, initial-scale=1">
+<title>Nextgen</title>
+<link href="css/font-awesome.min.css" rel="stylesheet" type="text/css" >
+
+<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" >
+<link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" type="text/css" >
+<link rel="stylesheet" href="css/jquery.flipster.min.css">
+<link href="css/style.css" rel="stylesheet" type="text/css" >
+<script src="js/jquery.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.flipster.min.js"></script>
+<script src="js/bootstrap-datetimepicker.min.js"></script>
+</head>
+<body>
+	<header>
+    	<div class="container">
+        	<div class="row">
+            	<div class="col-md-3 col-sm-12 col-xs-3">
+                	<div class="logo hidden-xs">
+                    	<img src="images/logo.png" alt="logo"> <span><span class="blue">NextGen</span><sapn class="orange"> HCM</span></span>
+                    </div>
+                </div>
+                <div class="col-md-9 col-sm-12">
+                <div class="phonenumber">
+                	<p><span class="fa fa-phone"></span>+1(999) 999 9999</p>
+                </div>
+                <div class="clearfix"></div>
+                <div class="row">
+                	<div class="menu">
+                    	<nav class="navbar navbar-default">
+                              <div class="container-fluid">
+                                <!-- Brand and toggle get grouped for better mobile display -->
+                                <div class="navbar-header">
+                                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
+                                    <span class="sr-only">Toggle navigation</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                  </button>
+                                  <a class="navbar-brand visible-xs" href="#"><img src="images/logo.png" alt="logo"></a>
+                                </div>
+                            
+                                <!-- Collect the nav links, forms, and other content for toggling -->
+                                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                                  <ul class="nav navbar-nav">
+                                    <li class=""><a href="#">Products <span class="sr-only">(current)</span></a></li>
+                                    <li><a href="#">Features</a></li>
+                                    <li><a href="#">Pricing</a></li>
+                                    <li><a href="#">Who we are?</a></li>
+                                     <li><a href="#">Contact Us</a></li>
+                                  </ul>
+                                  <button type="button" class="btn btn-danger pull-right hidden-xs"><span class="fa fa-sign-in"></span>Login</button>
+                                  
+                                </div><!-- /.navbar-collapse -->
+                              </div><!-- /.container-fluid -->
+							</nav>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <div class="form_payroll">
+    	<div class="container">
+        	<div class="row">
+            	<div class="col-sm-8">
+                	<div class="payroll">
+                    	<h3 class="text-left">Add Payroll Input By Worker</h3>
+                        <form class="form-horizontal">
+                          <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">Employee ID</label>
+                            <div class="col-sm-9">
+                              <input type="email" class="form-control" id="inputEmail3" placeholder="Employee ID">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-3 control-label">Run Category</label>
+                            <div class="col-sm-9">
+                              <select class="form-control">
+                              <option>Run Category</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                            </select>
+                            <span class="fa fa-angle-down arrow"></span>
+                            </div>
+                          </div>
+                           <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">Start Date</label>
+                            <div class="col-sm-9">
+                            <input size="16" type="text" value="07-March-2017" readonly class="form_datetime form-control">
+                              
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">End Date</label>
+                            <div class="col-sm-9">
+                              <input size="16" type="text" value="07-March-2017" readonly class="form_datetime form-control">
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-3 control-label">Pay Component Code</label>
+                            <div class="col-sm-9">
+                              <select class="form-control">
+                                  <option>1</option>
+                                  <option>2</option>
+                                  <option>3</option>
+                                  <option>4</option>
+                                  <option>5</option>
+                                </select>
+                                <span class="fa fa-angle-down arrow"></span>
+                            </div>
+                          </div>
+                           <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-3 control-label">Input Type</label>
+                            <div class="col-sm-9">
+                              <select class="form-control">
+                                  <option>1</option>
+                                  <option>2</option>
+                                  <option>3</option>
+                                  <option>4</option>
+                                  <option>5</option>
+                                </select>
+                                <span class="fa fa-angle-down arrow"></span>
+                            </div>
+                          </div>
+                          <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-3 control-label">Input Value</label>
+                            <div class="col-sm-9">
+                              <input type="password" class="form-control" id="inputPassword3" placeholder="Input Value">
+                            </div>
+                          </div>
+                          
+                          <div class="form-group">
+                            <div class="col-sm-offset-3 col-sm-10">
+                              <button type="submit" class="btn btn-default">Cancel</button>
+                              <button type="submit" class="btn btn-info">Submit</button>
+                            </div>
+                          </div>
+						</form>
+                        
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                	<div class="user_menu">
+                    	<ul>
+                        	<li><a href="#">Quick Link <span class="fa fa-search-plus pull-right"></span></a></li>
+                            <li><a href="#">Change Job <span class="fa fa-address-book-o pull-right"></span></a></li>
+                            <li><a href="#">Change Address <span class="fa fa-home pull-right"></span></a></li>
+                            <li><a href="#">Change Organizations <span class="fa fa-building pull-right"></span></a></li>
+                            <li><a href="#">Hire Worker <span class="fa fa-user-plus  pull-right"></span></a></li>
+                            <li><a href="#">View Worker <span class="fa fa-child pull-right"></span></a></li>
+                            <li><a href="#">View My Team <span class="fa fa-users  pull-right"></span></a></li>
+                            <li><a href="#">Change Benefity <span class="fa fa-plus pull-right"></span></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
+    
+    
+    <div class="contact">
+    	<div class="container">
+        	<div class="row">
+            <h1 class="text-center">CONTACT US</h1>
+            	<div class="col-sm-4">
+                	<div class="form_cont">
+                    	<form class="form-horizontal">
+                              <div class="form-group form-group-lg">
+                                
+                                <div class="col-sm-10">
+                                  <input class="form-control" type="text" id="formGroupInputLarge" placeholder="Full Name*">
+                                </div>
+                              </div>
+                              <div class="form-group form-group-lg">
+                               
+                                <div class="col-sm-10">
+                                  <input class="form-control" type="text" id="formGroupInputSmall" placeholder="Phone*">
+                                </div>
+                              </div>
+                              
+                              <div class="form-group form-group-lg">
+                               
+                                <div class="col-sm-10">
+                                  <select class="form-control">
+                                      <option>Select a Country*</option>
+                                      <option>2</option>
+                                      <option>3</option>
+                                      <option>4</option>
+                                      <option>5</option>
+                                    </select>
+                                </div>
+                              </div>
+                              <div class="form-group form-group-lg">
+                               
+                                <div class="col-sm-10">
+                                  <input class="form-control" type="text" id="formGroupInputSmall" placeholder="How can wb help you?*">
+                                </div>
+                              </div>
+						</form>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                	<div class="form_cont">
+                    	<form class="form-horizontal">
+                              <div class="form-group form-group-lg">
+                                
+                                <div class="col-sm-10">
+                                  <input class="form-control" type="text" id="formGroupInputLarge" placeholder="Business E-mail Address*">
+                                </div>
+                              </div>
+                              <div class="form-group form-group-lg">
+                               
+                                <div class="col-sm-10">
+                                  <input class="form-control" type="text" id="formGroupInputSmall" placeholder="Company Name*">
+                                </div>
+                              </div>
+                              
+                              <div class="form-group form-group-lg">
+                               
+                                <div class="col-sm-10">
+                                  <select class="form-control">
+                                      <option>Area of Interest*</option>
+                                      <option>2</option>
+                                      <option>3</option>
+                                      <option>4</option>
+                                      <option>5</option>
+                                    </select>
+                                </div>
+                              </div>
+                              <div class="form-group form-group-lg">
+                               
+                                <div class="col-sm-5">
+                                  <img src="images/image.jpg"  class="code" alt="code">
+                                </div>
+                                <div class="col-sm-5">
+                                  <input class="form-control" type="text" id="formGroupInputSmall" placeholder="Eneter Code">
+                                </div>
+                              </div>
+						</form>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                	<p class="contact_add">
+                        <strong>Evam Tech Labs Pvt. Ltd. </strong> <br>
+                        Plot No. 14, Rohini Layout<br>
+                        Madhapur, Hyderabad<br>
+                        Telangana - 500081<br><br>
+                        +91-40-32595768<br>
+                        Email: <a href="mailto:info@pulsehrm.com" style="color:#ff7400">info@pulsehrm.com</a>
+                    </p>
+                </div>
+                <div class="clearfix"></div>
+                <div class="align text-center">
+    	<button type="button" class="btn btn-warning">Submit!</button>
+    </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+    	<div class="container">
+        	<div class="row">
+            	<nav class="pull-left" >
+                	<a href="#">PulseHRM Lite | </a> <a href="#">Features |</a> <a href="#">Pricing |</a> <a href="#">Who we are? |</a>  <a href="#">Blog | </a> <a href="#">Contact Us |</a>  <a href="#">Terms</a> | <a href="#">Privacy policy</a><br>
+                    © 2014 <a target="_blank" href="#" title="">PulseHRM.com</a>. All Rights Reserved.
+                </nav>
+                <div class="pull-right">
+                	<div class="social">
+                    	<a href="#" target="_blank"><i class="fa fa-facebook"></i> </a>
+                    <a href="#" class="socialmedia_icons" target="_blank"><i class="fa fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <div class="signup">
+        <h2 class="text-center">Sign up Now!</h2>
+        <div id="fpi_title" class="rotate fpi_title"><h2>SIGN UP</h2></div>
+        		<form class="fix">
+                
+                      <div class="form-group">
+                        
+                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Full Name">
+                      </div>
+                      <div class="form-group">
+                        
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                      </div>
+                       <div class="form-group">
+                        
+                        <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                      </div>
+                      <div class="form-group">
+                        
+                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                      </div>
+                       <div class="form-group">
+                        
+                        <select class="form-control">
+                          <option>1</option>
+                          <option>2</option>
+                          <option>3</option>
+                          <option>4</option>
+                          <option>5</option>
+                        </select>
+                      </div>
+                      <div class="form-group">
+                        
+                        <select class="form-control">
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                            </select>
+                      </div>
+                       <div class="form-group">
+                        
+                        <select class="form-control">
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                            </select>
+                      </div>
+                      <div class="checkbox">
+      <label>
+        <input type="checkbox"> I agree to User Agreement
+      </label>
+    </div>
+ 				<button type="submit" class="btn btn-danger">Submit</button>
+				</form>
+        </div>
+    </div>
+    <script type="text/javascript">
+    $(".form_datetime").datetimepicker({
+        format: "dd MM yyyy"
+    });
+</script>  
+<script>
+    var coverflow = $("#coverflow").flipster({
+        style: 'flat',
+        spacing: -0.25
+    });
+</script>
+<script>
+$(window).scroll(function(){
+    if ($(window).scrollTop() >= 70) {
+       $('header').addClass('fixed-header');
+    }
+    else {
+       $('header').removeClass('fixed-header');
+    }
+});
+</script>
+<script>
+$(document).ready(function() {
+    $("#fpi_title").click(function(){
+		$(".signup").toggleClass("show");
+		
+});
+});
+</script>
+</body>
+</html>

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.nextgen.model.Employee;
 import com.nextgen.model.SpringSecurityUser;
 import com.nextgen.service.AppUserService;
+import com.nextgen.utils.EncryptionUtility;
 
 @Service(value = "userDetailsService")
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -38,7 +39,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 					source.getMessage("no.user.found.message", new Object[] { username }, null));
 		} else {
 			try {
-				return new SpringSecurityUser(appUser.getId(), appUser.getUsername(), appUser.getPassword(),
+				return new SpringSecurityUser(appUser.getId(), appUser.getUsername(), EncryptionUtility.decrypt(appUser.getPassword()),
 						// /*decrypting the password */
 						null, null, AuthorityUtils.commaSeparatedStringToAuthorityList(appUser.getAuthorities()));
 			} catch (Exception e) {

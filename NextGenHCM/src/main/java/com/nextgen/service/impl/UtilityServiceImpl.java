@@ -52,7 +52,7 @@ public class UtilityServiceImpl implements UtilityService {
 			dto.setId(state.getId());
 			dto.setContryId(statesDTO.getContryId());
 			dto.setName(state.getName());
-			statesDTOs.add(statesDTO);
+			statesDTOs.add(dto);
 		});
 
 		return statesDTOs;

@@ -18,11 +18,16 @@
 
 package com.nextgen.service;
 
+import java.sql.SQLException;
+
+import org.hibernate.HibernateException;
+
 import com.nextgen.dto.EmployeeAddressDTO;
 import com.nextgen.dto.EmployeeDTO;
 import com.nextgen.dto.JobChangeDTO;
 import com.nextgen.dto.PayrollDTO;
 import com.nextgen.dto.PositionDTO;
+import com.nextgen.dto.RegisterDTO;
 import com.nextgen.dto.TimeOffDTO;
 import com.nextgen.dto.UserDTO;
 import com.nextgen.exception.ApplicationCustomException;
@@ -36,89 +41,112 @@ import com.nextgen.exception.ApplicationCustomException;
 
 public interface UserService {
 
-	/**This method is used to create a worker into the system.
+	/**
+	 * This method is used to create a worker into the system.
 	 * 
 	 * @author umamaheswarar
-	 * @param createEmployeeDTO						worker related information to create the worker
-	 * @return createEmployeeDTO						worker information after creating the worker into the system.
-	 * @throws ApplicationCustomException 
+	 * @param createEmployeeDTO
+	 *            worker related information to create the worker
+	 * @return createEmployeeDTO worker information after creating the worker
+	 *         into the system.
+	 * @throws ApplicationCustomException
 	 */
 	public EmployeeDTO createEmployee(final EmployeeDTO createEmployeeDTO) throws ApplicationCustomException;
-	
-	/**This method is used to update a worker into the system.
+
+	/**
+	 * This method is used to update a worker into the system.
 	 * 
 	 * @author umamaheswarar
-	 * @param createEmployeeDTO						worker related information to create the worker
-	 * @return createEmployeeDTO						worker information after creating the worker into the system.
-	 * @throws ApplicationCustomException 
+	 * @param createEmployeeDTO
+	 *            worker related information to create the worker
+	 * @return createEmployeeDTO worker information after creating the worker
+	 *         into the system.
+	 * @throws ApplicationCustomException
 	 */
 	public EmployeeDTO updateEmployee(final EmployeeDTO createEmployeeDTO) throws ApplicationCustomException;
 
-	/**This method is used to get the user from system.
+	/**
+	 * This method is used to get the user from system.
 	 * 
 	 * @author umamaheswarar
-	 * @param username						username of the logged in user.
-	 * @return UserDTO						user details.
+	 * @param username
+	 *            username of the logged in user.
+	 * @return UserDTO user details.
 	 */
 	public UserDTO getUserDetails(final String username);
 
-	/**This method is used to create a position into the system.
+	/**
+	 * This method is used to create a position into the system.
 	 * 
 	 * @author umamaheswarar
-	 * @param positionDTO						position related information to create the position
-	 * @return positionDTO						position information after creating into the system.
-	 * @throws ApplicationCustomException 
+	 * @param positionDTO
+	 *            position related information to create the position
+	 * @return positionDTO position information after creating into the system.
+	 * @throws ApplicationCustomException
 	 */
 	public PositionDTO createJobPosition(final PositionDTO positionDTO) throws ApplicationCustomException;
 
-	/**This method is used to update a position into the system.
+	/**
+	 * This method is used to update a position into the system.
 	 * 
 	 * @author umamaheswarar
-	 * @param positionDTO						position related information to update the position
-	 * @return positionDTO						position information after updating into the system.
-	 * @throws ApplicationCustomException 
+	 * @param positionDTO
+	 *            position related information to update the position
+	 * @return positionDTO position information after updating into the system.
+	 * @throws ApplicationCustomException
 	 */
 	public PositionDTO updateJobPosition(final PositionDTO positionDTO) throws ApplicationCustomException;
 
-	/**This method is used to manage the time off of the employees
+	/**
+	 * This method is used to manage the time off of the employees
 	 * 
 	 * @author umamaheswarar
-	 * @param timeOffDTO					time off DTO object
-	 * @return TimeOffDTO					time off details after saving the details 
+	 * @param timeOffDTO
+	 *            time off DTO object
+	 * @return TimeOffDTO time off details after saving the details
 	 */
 	public TimeOffDTO manageTimeOff(final TimeOffDTO timeOffDTO) throws ApplicationCustomException;
 
-	/**This method is used to change the employee job details
+	/**
+	 * This method is used to change the employee job details
 	 * 
 	 * @author umamaheswarar
-	 * @param jobChangeDTO							job change details
-	 * @return jobChangeDTO							job change details after completion
-	 * @throws ApplicationCustomException			custom application message in case of any exception
+	 * @param jobChangeDTO
+	 *            job change details
+	 * @return jobChangeDTO job change details after completion
+	 * @throws ApplicationCustomException
+	 *             custom application message in case of any exception
 	 */
 	public JobChangeDTO jobChange(final JobChangeDTO jobChangeDTO) throws ApplicationCustomException;
 
-	/**This method is used to change the address details of the employee
+	/**
+	 * This method is used to change the address details of the employee
 	 * 
 	 * @author umamaheswarar
 	 * @param employeeAddressDTO
-	 * @return addressChangeEventId							address change event id
-	 * @throws ApplicationCustomException					custom application exception message
+	 * @return addressChangeEventId address change event id
+	 * @throws ApplicationCustomException
+	 *             custom application exception message
 	 */
 	public String changeContactDetails(final EmployeeAddressDTO employeeAddressDTO) throws ApplicationCustomException;
 
-	/**This method is used to manage the payroll of the employees
+	/**
+	 * This method is used to manage the payroll of the employees
 	 * 
 	 * @author umamaheswarar
-	 * @param payrollDTO					payrollDTO object
-	 * @return payrollDTO					payroll details after saving the details 
+	 * @param payrollDTO
+	 *            payrollDTO object
+	 * @return payrollDTO payroll details after saving the details
 	 */
 	public PayrollDTO managePayroll(final PayrollDTO payrollDTO) throws ApplicationCustomException;
-	
-	/**This method is used to manage the payroll of the employees
+
+	/**
+	 * This method is used to manage the payroll of the employees
 	 * 
 	 * @author umamaheswarar
-	 * @param registerDTO					
+	 * @param registerDTO
 	 */
-	public void managePayroll(final ` registerDTO) throws ApplicationCustomException;
+	public boolean register(final RegisterDTO registerDTO)
+			throws ApplicationCustomException, HibernateException, SQLException;
 
 }

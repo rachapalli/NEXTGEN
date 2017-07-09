@@ -17,9 +17,13 @@
  */
 package com.nextgen.controller;
 
+import java.sql.SQLException;
+
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.NoSuchMessageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +36,7 @@ import com.nextgen.dto.EmployeeDTO;
 import com.nextgen.dto.JobChangeDTO;
 import com.nextgen.dto.PayrollDTO;
 import com.nextgen.dto.PositionDTO;
+import com.nextgen.dto.RegisterDTO;
 import com.nextgen.dto.TimeOffDTO;
 import com.nextgen.enums.SecurityError;
 import com.nextgen.exception.ApplicationCustomException;
@@ -275,15 +280,17 @@ public class EmployeeController {
 	 * @author umamaheswarar
 	 * @param createWorkerDTO
 	 * @return ResponseEntity
+	 * @throws SQLException
+	 * @throws NoSuchMessageException
+	 * @throws HibernateException
 	 */
-	@RequestMapping(value = "/create/employee", method = RequestMethod.POST)
-	public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) {
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) throws HibernateException, NoSuchMessageException, SQLException {
 		LOGGER.info("CONTROLLER : Inside the create employee on controller...");
 		try {
-			final EmployeeDTO createdWorkerDetails = userService.createEmployee(createWorkerDTO);
-			if (createdWorkerDetails != null) {
+			if (userService.register(registerDTO)) {
 				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.OK.value(),
-						source.getMessage("employee.create.success.details.message", null, null), createdWorkerDetails),
+						source.getMessage("employee.save.sucess", null, null), null),
 						HttpStatus.OK);
 			}
 		} catch (ApplicationCustomException e) {

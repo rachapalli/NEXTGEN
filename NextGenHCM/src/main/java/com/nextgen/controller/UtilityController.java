@@ -56,7 +56,7 @@ public class UtilityController {
 		if (countries != null) {
 			return new ResponseEntity<Object>(
 					new BaseResponse(HttpStatus.OK.value(),
-							source.getMessage("employee.create.success.details.message", null, null), countries),
+							source.getMessage("employee.activity.sucess", null, null), countries),
 					HttpStatus.OK);
 		}
 		return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(),
@@ -70,7 +70,7 @@ public class UtilityController {
 		if (states != null) {
 			return new ResponseEntity<Object>(
 					new BaseResponse(HttpStatus.OK.value(),
-							source.getMessage("employee.create.success.details.message", null, null), states),
+							source.getMessage("employee.activity.sucess", null, null), states),
 					HttpStatus.OK);
 		}
 		return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(),
@@ -84,7 +84,7 @@ public class UtilityController {
 		if (cities != null) {
 			return new ResponseEntity<Object>(
 					new BaseResponse(HttpStatus.OK.value(),
-							source.getMessage("employee.create.success.details.message", null, null), cities),
+							source.getMessage("employee.activity.sucess", null, null), cities),
 					HttpStatus.OK);
 		}
 		return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(),

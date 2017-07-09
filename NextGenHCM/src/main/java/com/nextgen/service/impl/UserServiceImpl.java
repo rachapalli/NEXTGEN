@@ -18,9 +18,11 @@
 
 package com.nextgen.service.impl;
 
+import java.sql.SQLException;
 import java.util.Date;
 
 import org.apache.log4j.Logger;
+import org.hibernate.HibernateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
@@ -37,6 +39,7 @@ import com.nextgen.dto.JobProfileDTO;
 import com.nextgen.dto.JobReasonDTO;
 import com.nextgen.dto.PayrollDTO;
 import com.nextgen.dto.PositionDTO;
+import com.nextgen.dto.RegisterDTO;
 import com.nextgen.dto.TimeOffDTO;
 import com.nextgen.dto.TimeTypeDTO;
 import com.nextgen.dto.UserDTO;
@@ -44,7 +47,6 @@ import com.nextgen.enums.BaseAppConstants;
 import com.nextgen.exception.ApplicationCustomException;
 import com.nextgen.model.Address;
 import com.nextgen.model.AddressType;
-import com.nextgen.model.AddressTypes;
 import com.nextgen.model.AddressVisibility;
 import com.nextgen.model.City;
 import com.nextgen.model.Country;
@@ -64,6 +66,7 @@ import com.nextgen.model.TimeOff;
 import com.nextgen.model.TimeOffType;
 import com.nextgen.model.TimeType;
 import com.nextgen.service.UserService;
+import com.nextgen.utils.EncryptionUtility;
 import com.nextgen.utils.Utility;
 
 /**
@@ -112,8 +115,6 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private IBaseDAO<AddressType> addressTypeBaseDAO;
 	@Autowired
-	private IBaseDAO<AddressTypes> addressUsageBaseDAO;
-	@Autowired
 	private IBaseDAO<PayrollInputType> payrollInputTypeBaseDAO;
 	@Autowired
 	private IBaseDAO<PayrollRunType> payrollRunTypeBaseDAO;
@@ -121,19 +122,28 @@ public class UserServiceImpl implements UserService {
 	private IBaseDAO<AddressVisibility> addressVisibilityBaseDAO;
 	@Autowired
 	private MessageSource source;
-	 
-	 /**This method is used to create a worker into the system.
+	@Autowired
+	private IBaseDAO<Country> countryDao;
+	@Autowired
+	private IBaseDAO<State> StateDao;
+	@Autowired
+	private IBaseDAO<City> cityDao;
+
+	/**
+	 * This method is used to create a worker into the system.
 	 * 
 	 * @author umamaheswarar
-	 * @param createWorkerDTO						worker related information to create the worker
-	 * @return createEmployeeDTO						worker information after creating the worker into the system.
+	 * @param createWorkerDTO
+	 *            worker related information to create the worker
+	 * @return createEmployeeDTO worker information after creating the worker
+	 *         into the system.
 	 */
 	@Override
 	@Transactional
 	public EmployeeDTO createEmployee(EmployeeDTO createEmployeeDTO) throws ApplicationCustomException {
 		LOGGER.info("SERVICE : Inside create employee.");
 		if (createEmployeeDTO != null) {
-			//checking for the existing employee with the email id.
+			// checking for the existing employee with the email id.
 			final Employee existingUser = employeeBaseDAO.findUniqueByColumn(Employee.class, "username",
 					createEmployeeDTO.getEmail());
 			if (existingUser != null) {
@@ -141,14 +151,14 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		if (createEmployeeDTO != null) {
-			//checking for the existing employee with the email id.
+			// checking for the existing employee with the email id.
 			final Employee existingUser = employeeBaseDAO.findUniqueByColumn(Employee.class, "nationalId",
 					createEmployeeDTO.getNationalId());
 			if (existingUser != null) {
 				throw new ApplicationCustomException(source.getMessage("user.national.exists.message", null, null));
 			}
 		}
-		//creating new employee.
+		// creating new employee.
 		final Employee contact = getContactFromWorkerDTO(createEmployeeDTO, null);
 		if (contact != null) {
 			employeeBaseDAO.save(contact);
@@ -159,17 +169,19 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 	}
-	
-	 /**This method is used to update a worker into the system.
+
+	/**
+	 * This method is used to update a worker into the system.
 	 * 
 	 * @author umamaheswarar
-	 * @param createWorkerDTO							worker related information to create the worker
-	 * @return createEmployeeDTO						worker information after creating the worker into the system.
+	 * @param createWorkerDTO
+	 *            worker related information to create the worker
+	 * @return createEmployeeDTO worker information after creating the worker
+	 *         into the system.
 	 */
 	@Override
 	@Transactional
-	public EmployeeDTO updateEmployee(final EmployeeDTO createEmployeeDTO)
-			throws ApplicationCustomException {
+	public EmployeeDTO updateEmployee(final EmployeeDTO createEmployeeDTO) throws ApplicationCustomException {
 		LOGGER.info("SERVICE : Inside update employee.");
 		if (createEmployeeDTO != null) {
 			if (createEmployeeDTO.getNationalId() != null && !createEmployeeDTO.getNationalId().equals("")) {
@@ -196,12 +208,14 @@ public class UserServiceImpl implements UserService {
 		}
 		return createEmployeeDTO;
 	}
-	
-	/**This method is used to get the contact model object from worker DTO.
+
+	/**
+	 * This method is used to get the contact model object from worker DTO.
+	 * 
 	 * @param createEmployeeDTO
-	 * @return contact										contact model object
-	 * @throws ApplicationCustomException 
-	 * @throws NoSuchMessageException 
+	 * @return contact contact model object
+	 * @throws ApplicationCustomException
+	 * @throws NoSuchMessageException
 	 */
 	private Employee getContactFromWorkerDTO(final EmployeeDTO createEmployeeDTO, Employee employee)
 			throws NoSuchMessageException, ApplicationCustomException {
@@ -258,19 +272,21 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 	}
-	
-	/**This method is used to get worker info from the system.
+
+	/**
+	 * This method is used to get worker info from the system.
 	 * 
 	 * @author umamaheswarar
-	 * @param username						username of the logged in user.
-	 * @return UserDTO						user details.
+	 * @param username
+	 *            username of the logged in user.
+	 * @return UserDTO user details.
 	 */
 	@Override
 	@Transactional
-	public UserDTO getUserDetails(final String username){
+	public UserDTO getUserDetails(final String username) {
 		LOGGER.info("SERVICE : Inside getting user details.");
 		final Employee employee = employeeBaseDAO.findUniqueByColumn(Employee.class, "username", username);
-		if(employee!=null){
+		if (employee != null) {
 			final UserDTO user = new UserDTO();
 			user.setId(employee.getId());
 			user.setFirstName(employee.getFirstname());
@@ -281,19 +297,21 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
-	/**This method is used to create a position into the system.
+	/**
+	 * This method is used to create a position into the system.
 	 * 
 	 * @author umamaheswarar
-	 * @param positionDTO						position related information to create the position
-	 * @return positionDTO						position information after creating into the system.
-	 * @throws ApplicationCustomException 
+	 * @param positionDTO
+	 *            position related information to create the position
+	 * @return positionDTO position information after creating into the system.
+	 * @throws ApplicationCustomException
 	 */
 	@Override
 	@Transactional
 	public PositionDTO createJobPosition(final PositionDTO positionDTO) throws ApplicationCustomException {
 		LOGGER.info("SERVICE : Inside create job position...");
 		if (positionDTO != null) {
-			//getting the Model object from DTO object.
+			// getting the Model object from DTO object.
 			final Position position = getPositionFromPositionDTO(positionDTO, null);
 			if (position != null) {
 				positionBaseDAO.save(position);
@@ -306,43 +324,48 @@ public class UserServiceImpl implements UserService {
 			throw new ApplicationCustomException(source.getMessage("position.details.blank.message", null, null));
 		}
 	}
-	
-	/**This method is used to update a position into the system.
+
+	/**
+	 * This method is used to update a position into the system.
 	 * 
 	 * @author umamaheswarar
-	 * @param positionDTO						position related information to update the position
-	 * @return positionDTO						position information after updating into the system.
-	 * @throws ApplicationCustomException 
+	 * @param positionDTO
+	 *            position related information to update the position
+	 * @return positionDTO position information after updating into the system.
+	 * @throws ApplicationCustomException
 	 */
 	@Override
 	@Transactional
 	public PositionDTO updateJobPosition(final PositionDTO positionDTO) throws ApplicationCustomException {
 		LOGGER.info("SERVICE : Inside update position into the system.");
 		if (positionDTO != null) {
-		Position position = positionBaseDAO.findById(Position.class, positionDTO.getId());
-		//Before going to update, checking whether the position exists into the system or not
-		if(position!=null){
-			//Getting the model object from DTO object.
-		 position = getPositionFromPositionDTO(positionDTO, position);
+			Position position = positionBaseDAO.findById(Position.class, positionDTO.getId());
+			// Before going to update, checking whether the position exists into
+			// the system or not
 			if (position != null) {
-				positionBaseDAO.saveOrUpdate(position);
-				return positionDTO;
+				// Getting the model object from DTO object.
+				position = getPositionFromPositionDTO(positionDTO, position);
+				if (position != null) {
+					positionBaseDAO.saveOrUpdate(position);
+					return positionDTO;
+				} else {
+					return null;
+				}
 			} else {
-				return null;
+				throw new ApplicationCustomException(source.getMessage("position.not.exists.message", null, null));
 			}
-		}else{
-			throw new ApplicationCustomException(source.getMessage("position.not.exists.message", null, null));
-		}
 		} else {
 			throw new ApplicationCustomException(source.getMessage("position.details.blank.message", null, null));
 		}
 	}
-	
-	/**This method is used to get the position model object from position DTO.
+
+	/**
+	 * This method is used to get the position model object from position DTO.
 	 * 
 	 * @author umamaheswarar
-	 * @param positionDTO									position details DTO
-	 * @return position										position model object
+	 * @param positionDTO
+	 *            position details DTO
+	 * @return position position model object
 	 */
 	private Position getPositionFromPositionDTO(final PositionDTO positionDTO, Position position) {
 		LOGGER.info("SERVICE : In side getting position model object from DTO.");
@@ -400,15 +423,17 @@ public class UserServiceImpl implements UserService {
 			return null;
 		}
 	}
-	
-	/**This method is used to manage the time off of the employees
+
+	/**
+	 * This method is used to manage the time off of the employees
 	 * 
 	 * @author umamaheswarar
-	 * @param timeOffDTO					time off DTO object
-	 * @return TimeOffDTO					time off details after saving the details 
+	 * @param timeOffDTO
+	 *            time off DTO object
+	 * @return TimeOffDTO time off details after saving the details
 	 */
 	@Override
-	@Transactional(rollbackFor={Exception.class, ApplicationCustomException.class})
+	@Transactional(rollbackFor = { Exception.class, ApplicationCustomException.class })
 	public TimeOffDTO manageTimeOff(final TimeOffDTO timeOffDTO) throws ApplicationCustomException {
 		LOGGER.info("SERVICE : inside manage timeoff details of employee...");
 		TimeOff timeOff = null;
@@ -443,15 +468,18 @@ public class UserServiceImpl implements UserService {
 
 		return timeOffDTO;
 	}
-	
-	/**This method is used to get the position model object from position DTO.
+
+	/**
+	 * This method is used to get the position model object from position DTO.
 	 * 
 	 * @author umamaheswarar
-	 * @param timeOffDTO									time off DTO object
-	 * @throws ApplicationCustomException 
-	 * @throws NoSuchMessageException 
+	 * @param timeOffDTO
+	 *            time off DTO object
+	 * @throws ApplicationCustomException
+	 * @throws NoSuchMessageException
 	 */
-	private void setTimeOffFromTimeOffDTO(final TimeOffDTO timeOffDTO, TimeOff timeOff) throws NoSuchMessageException, ApplicationCustomException {
+	private void setTimeOffFromTimeOffDTO(final TimeOffDTO timeOffDTO, TimeOff timeOff)
+			throws NoSuchMessageException, ApplicationCustomException {
 		LOGGER.info("SERVICE : In side getting time off model object from DTO.");
 		if (timeOffDTO != null) {
 			final BaseAppDTO employeeDTO = timeOffDTO.getEmployee();
@@ -476,19 +504,22 @@ public class UserServiceImpl implements UserService {
 			} else {
 				throw new ApplicationCustomException(source.getMessage("employee.dto.empty.message", null, null));
 			}
-		} 
+		}
 	}
-	
-	/**This method is used to change the employee job details
+
+	/**
+	 * This method is used to change the employee job details
 	 * 
 	 * @author umamaheswarar
-	 * @param jobChangeDTO							job change details
-	 * @return jobChangeDTO							job change details after completion
-	 * @throws ApplicationCustomException			custom application message in case of any exception
+	 * @param jobChangeDTO
+	 *            job change details
+	 * @return jobChangeDTO job change details after completion
+	 * @throws ApplicationCustomException
+	 *             custom application message in case of any exception
 	 */
 	@Override
 	@Transactional
-	public JobChangeDTO jobChange(final JobChangeDTO jobChangeDTO) throws ApplicationCustomException{
+	public JobChangeDTO jobChange(final JobChangeDTO jobChangeDTO) throws ApplicationCustomException {
 		LOGGER.info("SERVICE : In side jobChange method...");
 		final BaseAppDTO employeeDTO = jobChangeDTO.getEmployee();
 		if (employeeDTO != null) {
@@ -537,13 +568,15 @@ public class UserServiceImpl implements UserService {
 			throw new ApplicationCustomException(source.getMessage("employee.dto.empty.message", null, null));
 		}
 	}
-	
-	/**This method is used to change the address details of the employee
+
+	/**
+	 * This method is used to change the address details of the employee
 	 * 
 	 * @author umamaheswarar
 	 * @param employeeAddressDTO
-	 * @return addressChangeEventId							address change event id
-	 * @throws ApplicationCustomException					custom application exception message
+	 * @return addressChangeEventId address change event id
+	 * @throws ApplicationCustomException
+	 *             custom application exception message
 	 */
 	@Override
 	@Transactional
@@ -559,12 +592,15 @@ public class UserServiceImpl implements UserService {
 					setAddressFromDTO(address, addressDTO);
 					address.setEmployee(employee);
 					addressBaseDAO.save(address);
-					
-					address.setAddressChangeEventId(employee.getId() + BaseAppConstants.UNDERSCORE.getValue()+BaseAppConstants.ADDRESS_CHANGE.getValue()+BaseAppConstants.UNDERSCORE.getValue() + address.getId());
+
+					address.setAddressChangeEventId(employee.getId() + BaseAppConstants.UNDERSCORE.getValue()
+							+ BaseAppConstants.ADDRESS_CHANGE.getValue() + BaseAppConstants.UNDERSCORE.getValue()
+							+ address.getId());
 					addressBaseDAO.save(address);
 					return address.getAddressChangeEventId();
 				} else {
-					throw new ApplicationCustomException(source.getMessage("employee.address.details.empty.message", null, null));
+					throw new ApplicationCustomException(
+							source.getMessage("employee.address.details.empty.message", null, null));
 				}
 			} else {
 				throw new ApplicationCustomException(source.getMessage("employee.not.exists.message", null, null));
@@ -573,11 +609,15 @@ public class UserServiceImpl implements UserService {
 		throw new ApplicationCustomException(source.getMessage("employee.dto.empty.message", null, null));
 	}
 
-	/**This method is used to get the updated address model from address DTO object
+	/**
+	 * This method is used to get the updated address model from address DTO
+	 * object
 	 * 
 	 * @author umamaheswarar
-	 * @param address							address model object
-	 * @param addressDTO						address DTO object
+	 * @param address
+	 *            address model object
+	 * @param addressDTO
+	 *            address DTO object
 	 */
 	private void setAddressFromDTO(final Address address, final AddressBaseDTO addressDTO) {
 		LOGGER.info("SERVICE: Inside setting address details model object");
@@ -585,50 +625,52 @@ public class UserServiceImpl implements UserService {
 			final BaseAppDTO addressType = addressDTO.getType();
 			if (addressType != null) {
 				final AddressType type = addressTypeBaseDAO.findById(AddressType.class, addressType.getId());
-				if(type!=null){
-				address.setType(type);
-				addressType.setName(type.getType());
+				if (type != null) {
+					address.setType(type);
+					addressType.setName(type.getType());
 				}
 			}
 			final BaseAppDTO addressUsage = addressDTO.getUsage();
 			if (addressUsage != null) {
-				/*final AddressUsage usage = addressUsageBaseDAO.findById(AddressUsage.class, addressUsage.getId());
-				if(usage!=null){
-				address.setAddressUsage(usage);
-			addressUsage.setName(usage.getUsage());
-				}*/
+				/*
+				 * final AddressUsage usage =
+				 * addressUsageBaseDAO.findById(AddressUsage.class,
+				 * addressUsage.getId()); if(usage!=null){
+				 * address.setAddressUsage(usage);
+				 * addressUsage.setName(usage.getUsage()); }
+				 */
 			}
 			final BaseAppDTO addressVisibility = addressDTO.getVisibility();
 			if (addressVisibility != null) {
 				final AddressVisibility visibility = addressVisibilityBaseDAO.findById(AddressVisibility.class,
 						addressVisibility.getId());
-				if(visibility!=null){
-				address.setVisibility(visibility);
-				addressVisibility.setName(visibility.getVisibility());
+				if (visibility != null) {
+					address.setVisibility(visibility);
+					addressVisibility.setName(visibility.getVisibility());
 				}
 			}
 			final BaseAppDTO cityDTO = addressDTO.getCity();
 			if (cityDTO != null) {
 				final City city = cityBaseDAO.findById(City.class, cityDTO.getId());
-				if(city!=null){
-				address.setCity(city);
-				cityDTO.setName(city.getName());
+				if (city != null) {
+					address.setCity(city);
+					cityDTO.setName(city.getName());
 				}
 			}
 			final BaseAppDTO stateDTO = addressDTO.getState();
 			if (stateDTO != null) {
 				final State state = stateBaseDAO.findById(State.class, stateDTO.getId());
-				if(state!=null){
-				address.setState(state);
-				stateDTO.setName(state.getName());
+				if (state != null) {
+					address.setState(state);
+					stateDTO.setName(state.getName());
 				}
 			}
 			final BaseAppDTO countryDTO = addressDTO.getCountry();
 			if (countryDTO != null) {
 				final Country country = countryBaseDAO.findById(Country.class, countryDTO.getId());
-				if(country!=null){
-				address.setCountry(country);
-				countryDTO.setName(country.getCountry_name());
+				if (country != null) {
+					address.setCountry(country);
+					countryDTO.setName(country.getCountry_name());
 				}
 			}
 			address.setCreateDate(new Date());
@@ -638,15 +680,17 @@ public class UserServiceImpl implements UserService {
 		}
 	}
 
-	/**This method is used to manage the payroll of the employees
+	/**
+	 * This method is used to manage the payroll of the employees
 	 * 
 	 * @author umamaheswarar
-	 * @param payrollDTO					payrollDTO object
-	 * @return payrollDTO					payroll details after saving the details 
+	 * @param payrollDTO
+	 *            payrollDTO object
+	 * @return payrollDTO payroll details after saving the details
 	 */
 	@Override
 	@Transactional
-	public PayrollDTO managePayroll(final PayrollDTO payrollDTO) throws ApplicationCustomException{
+	public PayrollDTO managePayroll(final PayrollDTO payrollDTO) throws ApplicationCustomException {
 		LOGGER.info("SERVICE : Inside manage payroll details...");
 		final Employee employee = employeeBaseDAO.findById(Employee.class, payrollDTO.getEmployeeId());
 		if (employee != null) {
@@ -657,18 +701,18 @@ public class UserServiceImpl implements UserService {
 			if (inputType != null) {
 				final PayrollInputType payrollInputType = payrollInputTypeBaseDAO.findById(PayrollInputType.class,
 						inputType.getId());
-				if(payrollInputType!=null){
-				employeePayroll.setInputType(payrollInputType);
-				inputType.setName(payrollInputType.getType());
+				if (payrollInputType != null) {
+					employeePayroll.setInputType(payrollInputType);
+					inputType.setName(payrollInputType.getType());
 				}
 			}
 			final BaseAppDTO runType = payrollDTO.getRunType();
 			if (runType != null) {
 				final PayrollRunType payrollRunType = payrollRunTypeBaseDAO.findById(PayrollRunType.class,
 						runType.getId());
-				if(payrollRunType!=null){
-				employeePayroll.setRunType(payrollRunType);
-				runType.setName(payrollRunType.getType());
+				if (payrollRunType != null) {
+					employeePayroll.setRunType(payrollRunType);
+					runType.setName(payrollRunType.getType());
 				}
 			}
 			employeePayroll.setInputValue(payrollDTO.getInputValue());
@@ -688,4 +732,24 @@ public class UserServiceImpl implements UserService {
 			throw new ApplicationCustomException(source.getMessage("employee.not.exists.message", null, null));
 		}
 	}
+
+	@Override
+	@Transactional
+	public boolean register(RegisterDTO registerDTO) throws ApplicationCustomException, HibernateException, SQLException {
+		Employee employee = employeeBaseDAO.findUniqueByColumn(Employee.class, "username", registerDTO.getEmail());
+		if (employee != null) {
+			throw new ApplicationCustomException("Email arleady registered, please check!");
+		}
+		employee = new Employee();
+		employee.setFirstname(registerDTO.getFirstName());
+		employee.setLastname(registerDTO.getLastName());
+		employee.setUsername(registerDTO.getEmail());
+		employee.setPassword(EncryptionUtility.encrypt(registerDTO.getPassword()));
+		employee.setCountry(countryDao.findById(Country.class, registerDTO.getCountry()));
+		employee.setState(stateBaseDAO.findById(State.class, registerDTO.getState()));
+		employee.setCity(cityBaseDAO.findById(City.class, registerDTO.getCity()));
+		employeeBaseDAO.save(employee);
+		return true;
+	}
+
 }

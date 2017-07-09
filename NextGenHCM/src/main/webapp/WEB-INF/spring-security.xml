@@ -15,7 +15,7 @@
 	<http pattern="/api/countries" security="none" /> 
 	<http pattern="/api/states" security="none" /> 
 	<http pattern="/api/cities" security="none" /> 
-	<http pattern="/api/customer/server/check" security="none" />
+	<http pattern="/api/admin/register" security="none" />
 	<http pattern="/api/logout" security="none" />
 	<http pattern="/api/web/login" security="none" />
 

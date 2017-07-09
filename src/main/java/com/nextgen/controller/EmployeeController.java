@@ -268,4 +268,30 @@ public class EmployeeController {
 				SecurityError.INVALID_DATA.getCode(), SecurityError.INVALID_DATA.getDescription()),
 				HttpStatus.BAD_REQUEST);
 	}
+	
+	/**
+	 * This method is used to create an employee into the system.
+	 * 
+	 * @author umamaheswarar
+	 * @param createWorkerDTO
+	 * @return ResponseEntity
+	 */
+	@RequestMapping(value = "/create/employee", method = RequestMethod.POST)
+	public ResponseEntity<?> register(@RequestBody RegisterDTO registerDTO) {
+		LOGGER.info("CONTROLLER : Inside the create employee on controller...");
+		try {
+			final EmployeeDTO createdWorkerDetails = userService.createEmployee(createWorkerDTO);
+			if (createdWorkerDetails != null) {
+				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.OK.value(),
+						source.getMessage("employee.create.success.details.message", null, null), createdWorkerDetails),
+						HttpStatus.OK);
+			}
+		} catch (ApplicationCustomException e) {
+			return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(),
+					SecurityError.INVALID_DATA.getCode(), e.getMessage()), HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<Object>(new BaseResponse(HttpStatus.BAD_REQUEST.value(),
+				SecurityError.INVALID_DATA.getCode(), SecurityError.INVALID_DATA.getDescription()),
+				HttpStatus.BAD_REQUEST);
+	}
 }

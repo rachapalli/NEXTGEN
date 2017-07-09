@@ -95,7 +95,7 @@ public interface UserService {
 	 * @return jobChangeDTO							job change details after completion
 	 * @throws ApplicationCustomException			custom application message in case of any exception
 	 */
-	public JobChangeDTO jobChange(JobChangeDTO jobChangeDTO) throws ApplicationCustomException;
+	public JobChangeDTO jobChange(final JobChangeDTO jobChangeDTO) throws ApplicationCustomException;
 
 	/**This method is used to change the address details of the employee
 	 * 
@@ -112,6 +112,13 @@ public interface UserService {
 	 * @param payrollDTO					payrollDTO object
 	 * @return payrollDTO					payroll details after saving the details 
 	 */
-	public PayrollDTO managePayroll(PayrollDTO payrollDTO) throws ApplicationCustomException;
+	public PayrollDTO managePayroll(final PayrollDTO payrollDTO) throws ApplicationCustomException;
+	
+	/**This method is used to manage the payroll of the employees
+	 * 
+	 * @author umamaheswarar
+	 * @param registerDTO					
+	 */
+	public void managePayroll(final ` registerDTO) throws ApplicationCustomException;
 
 }

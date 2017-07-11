@@ -39,7 +39,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 					source.getMessage("no.user.found.message", new Object[] { username }, null));
 		} else {
 			try {
-				return new SpringSecurityUser(appUser.getId(), appUser.getUsername(), EncryptionUtility.decrypt(appUser.getPassword()),
+				return new SpringSecurityUser(appUser.getId(), appUser.getUsername(), 
+						EncryptionUtility.decrypt(appUser.getPassword()),
 						// /*decrypting the password */
 						null, null, AuthorityUtils.commaSeparatedStringToAuthorityList(appUser.getAuthorities()));
 			} catch (Exception e) {

@@ -91,11 +91,12 @@ public class AuthenticationController {
 		try {
 			final Authentication authentication = this.authenticationManager
 					.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
-							EncryptionUtility.encrypt(authenticationRequest.getPassword())));
+							authenticationRequest.getPassword()));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			/* Reload password post-authentication so we can generate token */
 			final UserDetails userDetails = this.userDetailsService
 					.loadUserByUsername(authenticationRequest.getUsername());
+			LOGGER.info("USER DETAILS "+userDetails);
 			final String token = this.tokenUtils.generateToken(userDetails);
 			/* Return the generated token */
 			final UserDTO userDTO = userService.getUserDetails(authenticationRequest.getUsername());

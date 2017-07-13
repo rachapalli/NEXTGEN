@@ -67,7 +67,7 @@ public class EmployeeController {
 	 * @param createWorkerDTO
 	 * @return ResponseEntity
 	 */
-	@RequestMapping(value = "/create/employee", method = RequestMethod.POST)
+	@RequestMapping(value = "/create/applicant", method = RequestMethod.POST)
 	public ResponseEntity<?> createEmployee(@RequestBody EmployeeDTO createWorkerDTO) {
 		LOGGER.info("CONTROLLER : Inside the create employee on controller...");
 		try {
@@ -93,7 +93,7 @@ public class EmployeeController {
 	 * @param createWorkerDTO
 	 * @return ResponseEntity
 	 */
-	@RequestMapping(value = "/update/employee", method = RequestMethod.POST)
+	@RequestMapping(value = "/update/applicant", method = RequestMethod.POST)
 	public ResponseEntity<?> updateEmployee(@RequestBody EmployeeDTO createWorkerDTO) {
 		LOGGER.info("CONTROLLER : Inside the update employee on controller...");
 		try {

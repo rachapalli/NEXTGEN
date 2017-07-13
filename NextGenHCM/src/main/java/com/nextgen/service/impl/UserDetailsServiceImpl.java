@@ -27,9 +27,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 	 * This method to load the user based on username
 	 * 
 	 * @date Aug 8, 2016
-	 * @param username
-	 *            username to fetch the contact object form the database
-	 * @return Userdetails object Userdetails object
+	 * @param username            
+	 * @return Userdetails
 	 */
 	public UserDetails loadUserByUsername(final String username) {
 		final Employee appUser = this.appUserService.loadUserByUsername(username);
@@ -39,9 +38,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 					source.getMessage("no.user.found.message", new Object[] { username }, null));
 		} else {
 			try {
-				return new SpringSecurityUser(appUser.getId(), appUser.getUsername(), 
-						EncryptionUtility.decrypt(appUser.getPassword()),
-						// /*decrypting the password */
+				LOGGER.error("User Name : " + appUser.getUsername() + " Password " + EncryptionUtility.decrypt(appUser.getPassword()));
+				LOGGER.error("Authorities : " + appUser.getAuthorities());
+				return new SpringSecurityUser(appUser.getId(), appUser.getUsername(),
+						EncryptionUtility.decrypt(appUser.getPassword()), /* decrypting the password */
 						null, null, AuthorityUtils.commaSeparatedStringToAuthorityList(appUser.getAuthorities()));
 			} catch (Exception e) {
 				LOGGER.error("Exception in getting user by username : ", e);

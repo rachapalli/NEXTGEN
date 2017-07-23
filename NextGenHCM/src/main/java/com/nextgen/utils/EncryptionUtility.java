@@ -106,7 +106,7 @@ public class EncryptionUtility {
 	private static Key generateKey() throws Exception {
 		LOGGER.info("Start generateKey method");
 		Key key = new SecretKeySpec(EncryptionUtility.KEY.getBytes(), EncryptionUtility.ALGORITHM);
-		LOGGER.info("End generateKey method");
+		LOGGER.info("End generateKey method"+key);
 		return key;
 	}
 }

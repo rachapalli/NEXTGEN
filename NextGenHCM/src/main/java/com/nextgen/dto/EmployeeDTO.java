@@ -21,7 +21,7 @@ package com.nextgen.dto;
 import java.io.Serializable;
 
 /**
- * This classs is used to carry the information for the employee
+ * This class is used to carry the information for the employee
  * 
  * @author umamaheswarar
  *

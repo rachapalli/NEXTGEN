@@ -265,7 +265,7 @@ public class Employee implements java.io.Serializable {
 		return state;
 	}
 
-	@Column(name = "USERNAME", unique = true, length = 45)
+	@Column(name = "USERNAME", unique = true)
 	public String getUsername() {
 		return this.username;
 	}

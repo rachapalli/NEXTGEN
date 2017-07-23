@@ -91,7 +91,7 @@ public class AuthenticationController {
 		try {
 			final Authentication authentication = this.authenticationManager
 					.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(),
-							EncryptionUtility.encrypt(authenticationRequest.getPassword())));
+							authenticationRequest.getPassword()));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 			/* Reload password post-authentication so we can generate token */
 			final UserDetails userDetails = this.userDetailsService

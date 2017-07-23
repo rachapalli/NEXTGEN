@@ -78,7 +78,7 @@ public enum SecurityError {
 	    INVALID_USER_PERMISSION(HttpStatus.FORBIDDEN, 403001, "Invalid user permission"),
 	    INVALID_AVATAR_TYPE(HttpStatus.BAD_REQUEST, 400010, "Invalid file type for user avatar"),
 	    INVALID_TIME_FORMAT(HttpStatus.BAD_REQUEST, 400011, "Invalid date format"),
-	    NO_SUCH_USER(HttpStatus.FORBIDDEN, 403012, "No such user"),
+	    NO_SUCH_USER(HttpStatus.FORBIDDEN, 403012, "Please check the details you have provided, user name is wrong!"),
 	    SECURITY_KEY_NOT_FOUND(HttpStatus.FORBIDDEN, 403013, "No valid secret key found!!! Please request to again to reset password."),
 	    
 	    WRONG_AUTHORIZED_PASSWORD(HttpStatus.BAD_REQUEST, 400202, "Wrong password"),

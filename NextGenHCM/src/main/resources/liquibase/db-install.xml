@@ -2,17 +2,26 @@
 <databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.3.xsd">
+	
+	<changeSet id="1" author="umamaheswarar">
+		<sql >
+		<![CDATA[
+                INSERT INTO `nextgen`.`employee` (`AUTHORITIES`, `CREATE_DATE`,  `FIRSTNAME`,  `LASTNAME`, `PASSWORD`, `USERNAME`) 
+				VALUES ('ADMIN', now(), 'admin', 'admin', 'I/AOdi0IGtRNIhL34qvfww==', 'admin@nextgen.com');
+                
+            ]]>
+		</sql>
+	</changeSet>
 
-
-	<changeSet id="countries" author="umamaheswarar">
+	<changeSet id="2" author="umamaheswarar">
 		<sqlFile endDelimiter=";" path="classpath:countries.sql"
 			stripComments="true" />
 	</changeSet>
-	<changeSet id="states" author="umamaheswarar">
+	<changeSet id="3" author="umamaheswarar">
 		<sqlFile endDelimiter=";" path="classpath:states.sql"
 			stripComments="true" />
 	</changeSet>
-	<changeSet id="cities" author="umamaheswarar">
+	<changeSet id="4" author="umamaheswarar">
 		<sqlFile endDelimiter=";" path="classpath:cities.sql"
 			stripComments="true" />
 	</changeSet>

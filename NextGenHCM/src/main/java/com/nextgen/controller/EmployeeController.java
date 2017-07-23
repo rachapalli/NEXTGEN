@@ -74,7 +74,7 @@ public class EmployeeController {
 			final EmployeeDTO createdWorkerDetails = userService.createEmployee(createWorkerDTO);
 			if (createdWorkerDetails != null) {
 				return new ResponseEntity<Object>(new BaseResponse(HttpStatus.OK.value(),
-						source.getMessage("employee.create.success.details.message", null, null), createdWorkerDetails),
+						source.getMessage("employee.save.sucess", null, null), createdWorkerDetails),
 						HttpStatus.OK);
 			}
 		} catch (ApplicationCustomException e) {

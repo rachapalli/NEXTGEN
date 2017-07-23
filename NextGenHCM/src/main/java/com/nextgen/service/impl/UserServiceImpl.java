@@ -44,6 +44,7 @@ import com.nextgen.dto.TimeOffDTO;
 import com.nextgen.dto.TimeTypeDTO;
 import com.nextgen.dto.UserDTO;
 import com.nextgen.enums.BaseAppConstants;
+import com.nextgen.enums.SecurityError;
 import com.nextgen.exception.ApplicationCustomException;
 import com.nextgen.model.Address;
 import com.nextgen.model.AddressType;
@@ -134,39 +135,27 @@ public class UserServiceImpl implements UserService {
 	 * 
 	 * @author umamaheswarar
 	 * @param createWorkerDTO
-	 *            worker related information to create the worker
-	 * @return createEmployeeDTO worker information after creating the worker
-	 *         into the system.
+	 * @return createEmployeeDTO
 	 */
 	@Override
 	@Transactional
 	public EmployeeDTO createEmployee(EmployeeDTO createEmployeeDTO) throws ApplicationCustomException {
 		LOGGER.info("SERVICE : Inside create employee.");
 		if (createEmployeeDTO != null) {
-			// checking for the existing employee with the email id.
+			/* checking for the existing employee with the email id. */
 			final Employee existingUser = employeeBaseDAO.findUniqueByColumn(Employee.class, "username",
 					createEmployeeDTO.getEmail());
+
 			if (existingUser != null) {
-				throw new ApplicationCustomException(source.getMessage("user.email.exists.message", null, null));
+				getContactFromWorkerDTO(createEmployeeDTO, existingUser);
+				employeeBaseDAO.saveOrUpdate(existingUser);
+				createEmployeeDTO.setId(existingUser.getId());
+				return createEmployeeDTO;
+			} else {
+				throw new ApplicationCustomException(SecurityError.NO_SUCH_USER.getDescription());
 			}
-		}
-		if (createEmployeeDTO != null) {
-			// checking for the existing employee with the email id.
-			final Employee existingUser = employeeBaseDAO.findUniqueByColumn(Employee.class, "nationalId",
-					createEmployeeDTO.getNationalId());
-			if (existingUser != null) {
-				throw new ApplicationCustomException(source.getMessage("user.national.exists.message", null, null));
-			}
-		}
-		// creating new employee.
-		final Employee contact = getContactFromWorkerDTO(createEmployeeDTO, null);
-		if (contact != null) {
-			employeeBaseDAO.save(contact);
-			createEmployeeDTO.setId(contact.getId());
-			createEmployeeDTO.setNationalId(contact.getNationalId());
-			return createEmployeeDTO;
 		} else {
-			return null;
+			throw new ApplicationCustomException(SecurityError.INVALID_DATA.getDescription());
 		}
 	}
 
@@ -735,7 +724,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public boolean register(RegisterDTO registerDTO) throws ApplicationCustomException, HibernateException, SQLException {
+	public boolean register(RegisterDTO registerDTO)
+			throws ApplicationCustomException, HibernateException, SQLException {
 		Employee employee = employeeBaseDAO.findUniqueByColumn(Employee.class, "username", registerDTO.getEmail());
 		if (employee != null) {
 			throw new ApplicationCustomException("Email arleady registered, please check!");

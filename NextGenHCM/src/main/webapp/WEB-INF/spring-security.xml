@@ -18,6 +18,7 @@
 	<http pattern="/api/admin/register" security="none" />
 	<http pattern="/api/logout" security="none" />
 	<http pattern="/api/web/login" security="none" />
+	<http pattern="/api/admin/create/applicant" security="none" />
 
 	<!-- Configured access and intercepting URL's -->
 	<http use-expressions="true" create-session="stateless"

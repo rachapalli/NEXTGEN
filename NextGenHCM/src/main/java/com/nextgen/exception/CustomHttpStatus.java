@@ -26,7 +26,7 @@ import org.springframework.web.client.HttpStatusCodeException;
 
 /**
  * This class is created for handle the http status exception
- * @author umamaheswarar - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - Jul 13, 2016
  */
 

@@ -18,7 +18,7 @@
 /**
 * This Controller is used to test the server is up or not.
 * 
-* @author umamaheswarar - Chetu
+* @author umamaheswarar 
 * @version 1.0 - Feb 27, 2017
 */
 package com.nextgen.controller;
@@ -50,6 +50,12 @@ public class UtilityController {
 	@Autowired
 	private UtilityService utilityService;
 
+	/**
+	 * This controller method is used to get list of countries and return after parsing.
+	 * 
+	 * @return Country list
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/countries", method = RequestMethod.GET)
 	public ResponseEntity<?> countries() throws Exception {
 		final List<CountriesDTO> countries = utilityService.countries();
@@ -64,6 +70,13 @@ public class UtilityController {
 				HttpStatus.BAD_REQUEST);
 	}
 
+	/**
+	 * This controller method is used to get list of states and returns after parsing.
+	 * 
+	 * @param statesDTO
+	 * @return State list
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/states", method = RequestMethod.POST)
 	public ResponseEntity<?> states(@RequestBody StatesDTO statesDTO) throws Exception {
 		final List<StatesDTO> states = utilityService.states(statesDTO);
@@ -78,6 +91,13 @@ public class UtilityController {
 				HttpStatus.BAD_REQUEST);
 	}
 
+	/**
+	 * This controller method is used to get list of cities and returns after parsing
+	 * 
+	 * @param citiesDTO
+	 * @return list of cities
+	 * @throws Exception
+	 */
 	@RequestMapping(value = "/cities", method = RequestMethod.POST)
 	public ResponseEntity<?> cities(@RequestBody CitiesDTO citiesDTO) throws Exception {
 		final List<CitiesDTO> cities = utilityService.cities(citiesDTO);

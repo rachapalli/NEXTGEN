@@ -74,7 +74,7 @@ import com.nextgen.utils.Utility;
  * Class have all the implementations for the user service methods which are
  * related to employee basic functionality.
  * 
- * @author umamaheswarar - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - July 22, 2016
  */
 
@@ -125,10 +125,6 @@ public class UserServiceImpl implements UserService {
 	private MessageSource source;
 	@Autowired
 	private IBaseDAO<Country> countryDao;
-	@Autowired
-	private IBaseDAO<State> StateDao;
-	@Autowired
-	private IBaseDAO<City> cityDao;
 
 	/**
 	 * This method is used to create a worker into the system.
@@ -139,13 +135,13 @@ public class UserServiceImpl implements UserService {
 	 */
 	@Override
 	@Transactional
-	public EmployeeDTO createEmployee(EmployeeDTO createEmployeeDTO) throws ApplicationCustomException {
+	public EmployeeDTO createEmployee(final EmployeeDTO createEmployeeDTO) throws ApplicationCustomException {
 		LOGGER.info("SERVICE : Inside create employee.");
 		if (createEmployeeDTO != null) {
 			/* checking for the existing employee with the email id. */
 			final Employee existingUser = employeeBaseDAO.findUniqueByColumn(Employee.class, "username",
 					createEmployeeDTO.getEmail());
-
+			//Get existing employee details before saving
 			if (existingUser != null) {
 				getContactFromWorkerDTO(createEmployeeDTO, existingUser);
 				employeeBaseDAO.saveOrUpdate(existingUser);
@@ -176,7 +172,7 @@ public class UserServiceImpl implements UserService {
 			if (createEmployeeDTO.getNationalId() != null && !createEmployeeDTO.getNationalId().equals("")) {
 				final Employee existingUser = employeeBaseDAO.findUniqueByColumn(Employee.class, "nationalId",
 						createEmployeeDTO.getNationalId());
-				if (existingUser != null) {
+				if (existingUser != null) {//Getting existing user details
 					final Employee contact = getContactFromWorkerDTO(createEmployeeDTO, existingUser);
 					if (contact != null) {
 						employeeBaseDAO.saveOrUpdate(contact);
@@ -209,6 +205,7 @@ public class UserServiceImpl implements UserService {
 	private Employee getContactFromWorkerDTO(final EmployeeDTO createEmployeeDTO, Employee employee)
 			throws NoSuchMessageException, ApplicationCustomException {
 		LOGGER.info(" Service : inside getting employee model object from DTO");
+		//Populating employee details
 		if (createEmployeeDTO != null) {
 			if (employee == null) {
 				employee = new Employee();
@@ -274,6 +271,8 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public UserDTO getUserDetails(final String username) {
 		LOGGER.info("SERVICE : Inside getting user details.");
+		
+		//Loading employee details
 		final Employee employee = employeeBaseDAO.findUniqueByColumn(Employee.class, "username", username);
 		if (employee != null) {
 			final UserDTO user = new UserDTO();
@@ -366,6 +365,7 @@ public class UserServiceImpl implements UserService {
 			position.setAvailabilityDate(Utility.parseStringToUTCDate(positionDTO.getAvailabilityDate()));
 			final BaseAppDTO jobPostingTitle = positionDTO.getJobPostingTitle();
 			if (jobPostingTitle != null) {
+				//Getting job details and updating
 				final JobTitle jobTitle = jobTitleBaseDAO.findById(JobTitle.class, jobPostingTitle.getId());
 				if (jobTitle != null) {
 					position.setJobPostingTitle(jobTitle);
@@ -375,6 +375,7 @@ public class UserServiceImpl implements UserService {
 			final JobProfileDTO jobProfileDTO = positionDTO.getJobProfile();
 			if (jobProfileDTO != null) {
 				final JobProfile jobProfile = jobProfileBaseDAO.findById(JobProfile.class, jobProfileDTO.getId());
+				//Getting job profile details and updating
 				if (jobProfile != null) {
 					position.setJobProfile(jobProfile);
 					jobProfileDTO.setName(jobProfile.getName());
@@ -396,12 +397,14 @@ public class UserServiceImpl implements UserService {
 			final TimeTypeDTO timeTypeDTO = positionDTO.getTimeType();
 			if (timeTypeDTO != null) {
 				final TimeType timeType = timeTypeBaseDAO.findById(TimeType.class, timeTypeDTO.getId());
+				//Updating time details
 				position.setTimeType(timeType);
 				timeTypeDTO.setTimeType(timeType.getTimeType());
 			}
 			final BaseAppDTO locationDTO = positionDTO.getLocation();
 			if (locationDTO != null) {
 				final Location location = locationBaseDAO.findById(Location.class, locationDTO.getId());
+				//Updating location details
 				if (location != null) {
 					position.setLocation(location);
 					locationDTO.setName(location.getName());
@@ -474,6 +477,7 @@ public class UserServiceImpl implements UserService {
 			final BaseAppDTO employeeDTO = timeOffDTO.getEmployee();
 			if (employeeDTO != null) {
 				final Employee employee = employeeBaseDAO.findById(Employee.class, employeeDTO.getId());
+				//Populating employee details
 				if (employee != null) {
 					timeOff.setCreateDate(new Date());
 					timeOff.setDailyQuantity(timeOffDTO.getDailyQuantity());
@@ -573,9 +577,11 @@ public class UserServiceImpl implements UserService {
 		LOGGER.info("SERVICE : Inside the change contact details...");
 		if (employeeAddressDTO != null) {
 			final Long employeeId = employeeAddressDTO.getEmployeeId();
+			//Load employee object from data base.
 			final Employee employee = employeeBaseDAO.findById(Employee.class, employeeId);
 			if (employee != null) {
 				final AddressBaseDTO addressDTO = employeeAddressDTO.getAddress();
+				//Populating Address details.
 				if (addressDTO != null) {
 					final Address address = new Address();
 					setAddressFromDTO(address, addressDTO);
@@ -724,12 +730,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public boolean register(RegisterDTO registerDTO)
+	public boolean register(final RegisterDTO registerDTO)
 			throws ApplicationCustomException, HibernateException, SQLException {
+		//Loading employee details if there is any existing employee
 		Employee employee = employeeBaseDAO.findUniqueByColumn(Employee.class, "username", registerDTO.getEmail());
 		if (employee != null) {
 			throw new ApplicationCustomException("Email arleady registered, please check!");
 		}
+		//Populating basic details of employee
 		employee = new Employee();
 		employee.setFirstname(registerDTO.getFirstName());
 		employee.setLastname(registerDTO.getLastName());

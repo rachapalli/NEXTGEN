@@ -29,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 /**
  * This class created to hold the fields for accepting the user information
  * 
- * @author umamaheswarar - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - Aug 4, 2016
  */
 public class SpringSecurityUser implements UserDetails {

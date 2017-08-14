@@ -38,8 +38,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nextgen.component.TokenGenrator;
-import com.nextgen.dto.UserDTO;
 import com.nextgen.dto.ContactDTO;
+import com.nextgen.dto.UserDTO;
 import com.nextgen.enums.BaseAppConstants;
 import com.nextgen.enums.SecurityError;
 import com.nextgen.exception.ApplicationCustomException;
@@ -49,13 +49,12 @@ import com.nextgen.model.SpringSecurityUser;
 import com.nextgen.response.BaseResponse;
 import com.nextgen.service.UserService;
 import com.nextgen.service.UserWebService;
-import com.nextgen.utils.EncryptionUtility;
 
 /**
  * This Controller class created for handled all method related to authenticate
  * the request
  * 
- * @author umamaheswarar - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - Aug 4, 2016
  */
 

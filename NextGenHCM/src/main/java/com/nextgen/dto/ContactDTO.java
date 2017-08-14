@@ -17,7 +17,7 @@
  */
 /**
 * Class Information
-* @author vikashk3 - Chetu
+* @author umamaheswarar 
 * @version 1.0 - Aug 10, 2016
 */
 package com.nextgen.dto;

@@ -21,7 +21,7 @@ package com.nextgen.enums;
 /**
  * Enum for used in application
  * 
- * @author vikashk3 - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - Oct 11, 2016
  */
 

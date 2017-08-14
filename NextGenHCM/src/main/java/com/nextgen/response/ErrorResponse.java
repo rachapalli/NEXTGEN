@@ -23,7 +23,7 @@ import org.springframework.http.HttpStatus;
 /**
  * This class properties will use while returning error message and code. 
  * 
- * @author umamaheswarar - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - Jul 29, 2016
  */
 

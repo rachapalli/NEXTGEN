@@ -23,7 +23,7 @@ import org.springframework.http.HttpStatus;
 /**
  * Enum contains all the response codes along with messages.
  * 
- * @author umamaheswarar - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - Jul 21, 2016
  */
 

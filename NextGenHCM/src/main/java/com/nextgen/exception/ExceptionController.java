@@ -36,7 +36,7 @@ import com.nextgen.response.ExceptionResponse;
  * Class is to handle all the exception which are raising in any layer, acts as
  * a global exception.
  * 
- * @author umamaheswarar - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - Jul 29, 2016
  */
 

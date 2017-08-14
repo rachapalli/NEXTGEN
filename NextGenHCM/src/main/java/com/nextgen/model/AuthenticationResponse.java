@@ -20,7 +20,7 @@ package com.nextgen.model;
 /**
  * This Model class created for hold the token 
  * 
- * @author umamaheswarar - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - Aug 4, 2016
  */
 public class AuthenticationResponse {

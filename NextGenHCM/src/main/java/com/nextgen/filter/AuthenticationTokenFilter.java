@@ -42,14 +42,15 @@ import com.nextgen.component.TokenGenrator;
 import com.nextgen.enums.BaseAppConstants;
 
 /**
- * This Authentication Filter class created for handled all method related to authenticate the request
+ * This Authentication Filter class created for handled all method related to
+ * authenticate the request
  * 
- * @author umamaheswarar - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - Aug 4, 2016
  */
 public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFilter {
 	private static final Logger LOGGER = Logger.getLogger(AuthenticationTokenFilter.class);
-	
+
 	@Autowired
 	private TokenGenrator tokenUtils;
 	@Autowired
@@ -57,13 +58,23 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
 	@Autowired
 	private MessageSource source;
 
-	/**This filter method is created to authenticate the each request with the system
+	/**
+	 * This filter method is created to authenticate the each request with the
+	 * system
+	 * 
 	 * @date Aug 22, 2016
-	 * @param request						servlet request object
-	 * @param response						servlet response object
-	 * @param chain							filter chain object
-	 * @throws IOException					exception in case of any miss leading with the Input/Output stream of the system
-	 * @throws ServletException				exception in case of any miss leading with the servlet request/response
+	 * @param request
+	 *            servlet request object
+	 * @param response
+	 *            servlet response object
+	 * @param chain
+	 *            filter chain object
+	 * @throws IOException
+	 *             exception in case of any miss leading with the Input/Output
+	 *             stream of the system
+	 * @throws ServletException
+	 *             exception in case of any miss leading with the servlet
+	 *             request/response
 	 */
 	@Override
 	public void doFilter(final ServletRequest request, final ServletResponse response, final FilterChain chain)
@@ -73,50 +84,60 @@ public class AuthenticationTokenFilter extends UsernamePasswordAuthenticationFil
 
 		userDetailsService = WebApplicationContextUtils.getRequiredWebApplicationContext(this.getServletContext())
 				.getBean(UserDetailsService.class);
-		
+
 		final HttpServletResponse httpResponse = (HttpServletResponse) response;
 		final HttpServletRequest httpRequest = (HttpServletRequest) request;
-		
+
 		final String authToken = httpRequest.getHeader(BaseAppConstants.TOKEN_HEADER.getValue());
 		final String username = this.tokenUtils.getUsernameFromToken(authToken);
-		
+
 		LOGGER.info("AUTH TOKEN					: " + authToken);
-		LOGGER.info("URL 					: " + httpRequest.getRequestURL());
+		LOGGER.info("URL 						: " + httpRequest.getRequestURL());
 		LOGGER.info("METHOD TYPE 				: " + httpRequest.getMethod());
 		LOGGER.info("AUTH TYPE 					: " + httpRequest.getAuthType());
-		
+
 		Enumeration<String> enums = httpRequest.getHeaderNames();
 		while (enums.hasMoreElements()) {
 			LOGGER.info("Request Header  			: " + enums.nextElement());
 		}
-		
+
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+			//Loading use details from spring context.
 			final UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-			if (this.tokenUtils.validateToken(authToken, userDetails)) {
+			if (this.tokenUtils.validateToken(authToken, userDetails)) {//validating authentication token 
 				final UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
 						userDetails, null, userDetails.getAuthorities());
 				authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(httpRequest));
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			}
 		}
-		
+
 		LOGGER.info(" Null Check " + httpRequest.getHeader("Access-Control-Request-Method"));
 		LOGGER.info(" Request Method " + httpRequest.getMethod());
-		
-		if (httpRequest.getHeader("Access-Control-Request-Method") != null && "OPTIONS".equalsIgnoreCase(httpRequest.getMethod())){
+
+		if (httpRequest.getHeader("Access-Control-Request-Method") != null
+				&& "OPTIONS".equalsIgnoreCase(httpRequest.getMethod())) {
 			LOGGER.info("Inside Request Method type Options");
 			httpResponse.setHeader(BaseAppConstants.ACCESS_CONTROL_ALLOW_ORIGIN.getValue(), "*");
-			httpResponse.setHeader(BaseAppConstants.ACCESS_CONTROL_ALLOW_CREDENTIALS.getValue(), BaseAppConstants.TRUE.getValue());
-			
-			httpResponse.setHeader(BaseAppConstants.ACCESS_CONTROL_ALLOW_METHODS.getValue(), source.getMessage("access.controll.allow.methods", null, null));
-			httpResponse.setHeader(BaseAppConstants.ACCESS_CONTROL_ALLOW_HEADERS.getValue(), source.getMessage("access.controll.allow.headers", null, null));
-			
-			/*resp.setHeader(BaseAppConstants.ACCESS_CONTROL_EXPOSE_HEADERS.getValue(), source.getMessage("access.controll.allow.headers", null, null));*/
-			httpResponse.setHeader(BaseAppConstants.ACCESS_CONTROL_MAX_AGE.getValue(), source.getMessage("access.controll.max.age", null, null));
+			httpResponse.setHeader(BaseAppConstants.ACCESS_CONTROL_ALLOW_CREDENTIALS.getValue(),
+					BaseAppConstants.TRUE.getValue());
+
+			httpResponse.setHeader(BaseAppConstants.ACCESS_CONTROL_ALLOW_METHODS.getValue(),
+					source.getMessage("access.controll.allow.methods", null, null));
+			httpResponse.setHeader(BaseAppConstants.ACCESS_CONTROL_ALLOW_HEADERS.getValue(),
+					source.getMessage("access.controll.allow.headers", null, null));
+
+			/*
+			 * resp.setHeader(BaseAppConstants.ACCESS_CONTROL_EXPOSE_HEADERS.
+			 * getValue(), source.getMessage("access.controll.allow.headers",
+			 * null, null));
+			 */
+			httpResponse.setHeader(BaseAppConstants.ACCESS_CONTROL_MAX_AGE.getValue(),
+					source.getMessage("access.controll.max.age", null, null));
 			httpResponse.setStatus(HttpServletResponse.SC_OK);
-        } else { 
-        	LOGGER.info("Inside filter chain . . ");
-        	chain.doFilter(request, response);
-        }
+		} else {
+			LOGGER.info("Inside filter chain . . ");
+			chain.doFilter(request, response);
+		}
 	}
 }

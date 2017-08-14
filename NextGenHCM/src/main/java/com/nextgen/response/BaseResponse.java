@@ -20,7 +20,7 @@ package com.nextgen.response;
 /**
  * Using to create a custom response to support API consumer.
  * 
- * @author umamaheswarar - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - Jul 21, 2016
  */
 

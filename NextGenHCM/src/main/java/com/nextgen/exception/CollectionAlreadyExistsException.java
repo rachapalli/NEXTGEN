@@ -21,7 +21,7 @@ package com.nextgen.exception;
 /**
  * This class is created for handle exception when collection is already exist
  * 
- * @author umamaheswarar - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - Jul 21, 2016
  */
 

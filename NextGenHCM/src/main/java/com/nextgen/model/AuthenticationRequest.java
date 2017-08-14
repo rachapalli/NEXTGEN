@@ -21,7 +21,7 @@ package com.nextgen.model;
 /**
  * This Model class created to hold the data for authentication request
  * 
- * @author umamaheswarar - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - Aug 4, 2016
  */
 public class AuthenticationRequest {

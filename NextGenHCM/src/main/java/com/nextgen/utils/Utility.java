@@ -33,7 +33,7 @@ import com.nextgen.enums.BaseAppConstants;
 /**
 * utility class for parsing the dates and getting the username
 * 
-* @author vikashk3 - Chetu
+* @author umamaheswarar 
 * @version 1.0 - Aug 17, 2016
 */
 

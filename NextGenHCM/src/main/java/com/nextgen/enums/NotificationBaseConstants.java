@@ -21,7 +21,7 @@ package com.nextgen.enums;
 /**
  * Enum for used in Notification
  * 
- * @author umamaheswarar - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - Feb 11, 2016
  */
 

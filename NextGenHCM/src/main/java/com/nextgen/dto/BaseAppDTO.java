@@ -23,7 +23,7 @@ import java.io.Serializable;
 /**
  * This class contains the details of application basic select menu data.
  * 
- * @author umamaheswarar - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - Jul 14, 2016
  */
 

@@ -17,7 +17,7 @@
  */
 /**
 * Class Information
-* @author umamaheswarar - Chetu
+* @author umamaheswarar 
 * @version 1.0 - Jul 30, 2016
 */
 package com.nextgen.response;

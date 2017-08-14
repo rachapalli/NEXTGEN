@@ -26,7 +26,7 @@ import com.nextgen.service.UserWebService;
 /**
  * This class implements the all method of UserWebService interface
  * 
- * @author vikashk3 - Chetu
+ * @author umamaheswarar 
  * @version 1.0 - Aug 8, 2016
  */
 @Service
